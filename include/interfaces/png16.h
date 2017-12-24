@@ -38,7 +38,6 @@ struct PNG16IFace
 	void (*png_set_compression_buffer_size)(png_structrp png_ptr, png_size_t size);
 	jmp_buf *(*png_set_longjmp_fn)(png_structrp png_ptr, png_longjmp_ptr longjmp_fn, size_t jmp_buf_size);
 	void (*png_longjmp)(png_const_structrp png_ptr, int val);
-	int (*png_reset_zstream)(png_structrp png_ptr);
 	png_structp (*png_create_read_struct_2)(png_const_charp user_png_ver, png_voidp error_ptr, png_error_ptr error_fn, png_error_ptr warn_fn, png_voidp mem_ptr, png_malloc_ptr malloc_fn, png_free_ptr free_fn);
 	png_structp (*png_create_write_struct_2)(png_const_charp user_png_ver, png_voidp error_ptr, png_error_ptr error_fn, png_error_ptr warn_fn, png_voidp mem_ptr, png_malloc_ptr malloc_fn, png_free_ptr free_fn);
 	void (*png_write_sig)(png_structrp png_ptr);
@@ -47,11 +46,9 @@ struct PNG16IFace
 	void (*png_write_chunk_data)(png_structrp png_ptr, png_const_bytep data, png_size_t length);
 	void (*png_write_chunk_end)(png_structrp png_ptr);
 	png_infop (*png_create_info_struct)(png_const_structrp png_ptr);
-	void (*png_info_init_3)(png_infopp info_ptr, png_size_t png_info_struct_size);
 	void (*png_write_info_before_PLTE)(png_structrp png_ptr, png_const_inforp info_ptr);
 	void (*png_write_info)(png_structrp png_ptr, png_const_inforp info_ptr);
 	void (*png_read_info)(png_structrp png_ptr, png_inforp info_ptr);
-	png_const_charp (*png_convert_to_rfc1123)(png_structrp png_ptr, png_const_timep ptime);
 	int (*png_convert_to_rfc1123_buffer)(char out[29], png_const_timep ptime);
 	void (*png_convert_from_struct_tm)(png_timep ptime, const struct tm * ttime);
 	void (*png_convert_from_time_t)(png_timep ptime, time_t ttime);
@@ -144,8 +141,6 @@ struct PNG16IFace
 	void (*png_free)(png_const_structrp png_ptr, png_voidp ptr);
 	void (*png_free_data)(png_const_structrp png_ptr, png_inforp info_ptr, png_uint_32 free_me, int num);
 	void (*png_data_freer)(png_const_structrp png_ptr, png_inforp info_ptr, int freer, png_uint_32 mask);
-	png_voidp (*png_malloc_default)(png_const_structrp png_ptr, png_alloc_size_t size);
-	void (*png_free_default)(png_const_structrp png_ptr, png_voidp ptr);
 	void (*png_error)(png_const_structrp png_ptr, png_const_charp error_message);
 	void (*png_chunk_error)(png_const_structrp png_ptr, png_const_charp error_message);
 	void (*png_warning)(png_const_structrp png_ptr, png_const_charp warning_message);
@@ -239,7 +234,6 @@ struct PNG16IFace
 	png_const_charp (*png_get_header_version)(png_const_structrp png_ptr);
 	png_const_charp (*png_get_libpng_ver)(png_const_structrp png_ptr);
 	png_uint_32 (*png_permit_mng_features)(png_structrp png_ptr, png_uint_32 mng_features_permitted);
-	void (*png_set_strip_error_numbers)(png_structrp png_ptr, png_uint_32 strip_mode);
 	void (*png_set_user_limits)(png_structrp png_ptr, png_uint_32 user_width_max, png_uint_32 user_height_max);
 	png_uint_32 (*png_get_user_width_max)(png_const_structrp png_ptr);
 	png_uint_32 (*png_get_user_height_max)(png_const_structrp png_ptr);
