@@ -33,7 +33,7 @@ SRCS := init.c zlib-stubs.c $(main_SRCS)
 OBJS := $(SRCS:.c=.o)
 
 .PHONY: all
-all: $(TARGET)
+all: $(TARGET) libpng16.a
 
 init.o: $(TARGET)_rev.h png16_vectors.c png16_vectors.h
 
