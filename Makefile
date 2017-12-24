@@ -19,8 +19,10 @@ PNG16DIR := libpng-1.6.34
 
 OPTIMIZE := -O2 -fomit-frame-pointer
 DEBUG    := -g
+INCLUDES := -I./include -I./$(PNG16DIR) -I./png16-build
 WARNINGS := -Wall -Wwrite-strings -Werror
-CFLAGS   := $(OPTIMIZE) $(DEBUG) -I./include -I./$(PNG16DIR) $(WARNINGS)
+
+CFLAGS   := $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
 LDFLAGS  := -static
 LIBS     := png16-build/.libs/libpng16.a
 
@@ -46,7 +48,7 @@ png16-build/Makefile: $(PNG16DIR)/configure
 build-png16: png16-build/Makefile
 	$(MAKE) -C png16-build
 
-$(TARGET): $(OBJS) build-png16
+$(TARGET): build-png16 $(OBJS)
 	$(CC) $(LDFLAGS) -nostartfiles -o $@.debug $(OBJS) $(LIBS)
 	$(STRIP) -R.comment -o $@ $@.debug
 
