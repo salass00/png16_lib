@@ -32,7 +32,8 @@
 #include <interfaces/png16.h>
 #include "png16.library_rev.h"
 
-STATIC CONST UBYTE USED verstag[] = VERSTAG;
+static const USED TEXT verstag[] = VERSTAG;
+static const USED TEXT extversion[] = "\0$EXTVER: libpng " PNG_LIBPNG_VER_STRING " (" DATE ")";
 
 struct PNG16Base {
 	struct Library libNode;
