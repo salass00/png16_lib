@@ -148,7 +148,6 @@ struct PNG16IFace
 	void (*png_free_default)(png_const_structrp png_ptr, png_voidp ptr);
 	void (*png_error)(png_const_structrp png_ptr, png_const_charp error_message);
 	void (*png_chunk_error)(png_const_structrp png_ptr, png_const_charp error_message);
-	void (*png_err)(png_const_structrp png_ptr);
 	void (*png_warning)(png_const_structrp png_ptr, png_const_charp warning_message);
 	void (*png_chunk_warning)(png_const_structrp png_ptr, png_const_charp warning_message);
 	void (*png_benign_error)(png_const_structrp png_ptr, png_const_charp warning_message);
@@ -257,7 +256,6 @@ struct PNG16IFace
 	png_fixed_point (*png_get_y_offset_inches_fixed)(png_const_structrp png_ptr, png_const_inforp info_ptr);
 	png_uint_32 (*png_get_pHYs_dpi)(png_const_structrp png_ptr, png_const_inforp info_ptr, png_uint_32 *res_x, png_uint_32 *res_y, int *unit_type);
 	png_uint_32 (*png_get_io_state)(png_const_structrp png_ptr);
-	png_const_bytep (*png_get_io_chunk_name)(png_structrp png_ptr);
 	png_uint_32 (*png_get_io_chunk_type)(png_const_structrp png_ptr);
 	png_uint_32 (*png_get_uint_32)(png_const_bytep buf);
 	png_uint_16 (*png_get_uint_16)(png_const_bytep buf);
