@@ -29,7 +29,7 @@ LIBS     := png16-build/.libs/libpng16.a
 main_SRCS := main/Obtain.c main/Release.c
 main_OBJS := $(main_SRCS:.c=.o)
 
-SRCS := init.c $(main_SRCS)
+SRCS := init.c zlib-stubs.c $(main_SRCS)
 OBJS := $(SRCS:.c=.o)
 
 .PHONY: all

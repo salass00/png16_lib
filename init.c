@@ -147,7 +147,7 @@ STATIC struct PNG16Base *libInit(struct PNG16Base *libBase, BPTR seglist, struct
 	}
 
 	IZ = OpenInterface("z.library", 53);
-	if (IZ == NULL) {
+	if (IZ == NULL || !LIB_IS_AT_LEAST(IZ->Data.LibBase, 53, 9)) {
 		IExec->Alert(AG_OpenLib | AO_Unknown);
 		goto error;
 	}
@@ -156,6 +156,7 @@ STATIC struct PNG16Base *libInit(struct PNG16Base *libBase, BPTR seglist, struct
 
 error:
 
+	CloseInterface(IZ);
 	CloseInterface(INewlib);
 
 	IExec->DeleteLibrary((struct Library *)libBase);
