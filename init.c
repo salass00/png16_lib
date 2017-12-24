@@ -42,6 +42,7 @@ struct PNG16Base {
 
 struct ExecIFace *IExec;
 struct Interface *INewlib;
+struct Interface *IZ;
 
 int32 _start(void) {
 	/* If you feel like it, open DOS and print something to the user */
@@ -113,6 +114,7 @@ STATIC BPTR libExpunge(struct LibraryManagerInterface *Self) {
 		result = libBase->segList;
 
 		/* Undo what the init code did */
+		CloseInterface(IZ);
 		CloseInterface(INewlib);
 
 		IExec->Remove((struct Node *)libBase);
@@ -144,9 +146,17 @@ STATIC struct PNG16Base *libInit(struct PNG16Base *libBase, BPTR seglist, struct
 		goto error;
 	}
 
+	IZ = OpenInterface("z.library", 53);
+	if (IZ == NULL) {
+		IExec->Alert(AG_OpenLib | AO_Unknown);
+		goto error;
+	}
+
 	return libBase;
 
 error:
+
+	CloseInterface(INewlib);
 
 	IExec->DeleteLibrary((struct Library *)libBase);
 
