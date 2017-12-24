@@ -5,3 +5,6 @@ png16-build
 # Ignore generated exe files
 png16.library
 png16.library.debug
+pngcrush
+pngcrush.debug
+

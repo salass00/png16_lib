@@ -26,14 +26,16 @@ CFLAGS   := $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
 LDFLAGS  := -static
 LIBS     := png16-build/.libs/libpng16.a
 
+STRIPFLAGS := -R.comment --strip-unneeded-rel-relocs
+
 main_SRCS := main/Obtain.c main/Release.c
 main_OBJS := $(main_SRCS:.c=.o)
 
-SRCS := init.c zlib-stubs.c $(main_SRCS)
+SRCS := init.c zlib/stubs.c $(main_SRCS)
 OBJS := $(SRCS:.c=.o)
 
 .PHONY: all
-all: $(TARGET) libpng16.a
+all: $(TARGET) libpng16.a pngcrush
 
 init.o: $(TARGET)_rev.h png16_vectors.c png16_vectors.h
 
@@ -50,15 +52,20 @@ build-png16: png16-build/Makefile
 
 $(TARGET): build-png16 $(OBJS)
 	$(CC) $(LDFLAGS) -nostartfiles -o $@.debug $(OBJS) $(LIBS)
-	$(STRIP) -R.comment -o $@ $@.debug
+	$(STRIP) $(STRIPFLAGS) -o $@ $@.debug
 
 libpng16.a: static/autoinit_png16_base.o static/autoinit_png16_main.o static/stubs.o
 	$(AR) -crv $@ $^
 	$(RANLIB) $@
 
+pngcrush: pngcrush-1.8.13/pngcrush.o zlib/stubs.o zlib/autoinit_z_base.o zlib/autoinit_z_main.o libpng16.a
+	$(CC) $(LDFLAGS) -o $@.debug $^
+	$(STRIP) $(STRIPFLAGS) -o $@ $@.debug
+
 .PHONY: clean
 clean:
-	rm -f $(TARGET).debug *.o main/*.o lib*.a static/*.o
+	rm -f pngcrush pngcrush.debug pngcrush-1.8.13/*.o zlib/*.o
+	rm -f $(TARGET) $(TARGET).debug *.o main/*.o lib*.a static/*.o
 	rm -rf png16-build
 
 .PHONY: revision
