@@ -1,0 +1,61 @@
+; Script for generating a release archive
+
+make all
+
+set libpngdir libpng-1.6.34
+set destdir RAM:mkrelease
+set fullvers `version file png16.library`
+set numvers `cut "$fullvers" word 2`
+
+delete all force ${destdir}
+makedir all force ${destdir}/png16_lib-$numvers/Libs
+makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/proto
+makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/interfaces
+makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/inline4
+makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/libraries
+makedir all force ${destdir}/png16_lib-$numvers/SDK/local/newlib/lib/pkgconfig
+makedir all force ${destdir}/png16_lib-$numvers/Examples
+
+copy clone Install ${destdir}/png16_lib-$numvers
+copy clone LICENSE ${destdir}/png16_lib-$numvers
+copy clone ${libpngdir}/LICENSE ${destdir}/png16_lib-$numvers/LICENSE-libpng16
+copy clone releasenotes ${destdir}/png16_lib-$numvers
+copy clone png16.library ${destdir}/png16_lib-$numvers/Libs
+copy clone include/proto/png16.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/proto
+copy clone include/interfaces/png16.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/interfaces
+copy clone include/inline4/png16.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/inline4
+copy clone include/libraries/png16.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/libraries
+copy clone ${libpngdir}/png.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/libpng16
+copy clone ${libpngdir}/pngconf.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/libpng16
+copy clone png16-build/pnglibconf.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/libpng16
+copy clone libpng16.a ${destdir}/png16_lib-$numvers/SDK/local/newlib/lib
+copy clone png16-build/libpng16.la ${destdir}/png16_lib-$numvers/SDK/local/newlib/lib
+copy clone png16-build/libpng16.pc ${destdir}/png16_lib-$numvers/SDK/local/newlib/lib/pkgconfig
+
+sed "s/png16_lib-xx.xx/png16_lib-$numvers/g" AutoInstall > ${destdir}/AutoInstall
+
+echo "Short:        Shared library based on libpng16"     > ${destdir}/png16_lib-$numvers/png16_lib.readme
+echo "Author:       Fredrik Wikstrom"                    >> ${destdir}/png16_lib-$numvers/png16_lib.readme
+echo "Uploader:     Fredrik Wikstrom <fredrik@a500.org>" >> ${destdir}/png16_lib-$numvers/png16_lib.readme
+echo "Type:         util/libs"                           >> ${destdir}/png16_lib-$numvers/png16_lib.readme
+echo "Version:      $numvers"                            >> ${destdir}/png16_lib-$numvers/png16_lib.readme
+echo "Architecture: ppc-amigaos"                         >> ${destdir}/png16_lib-$numvers/png16_lib.readme
+echo ""                                                  >> ${destdir}/png16_lib-$numvers/png16_lib.readme
+type README                                              >> ${destdir}/png16_lib-$numvers/png16_lib.readme
+
+copy clone ENV:Sys/def_drawer.info ${destdir}/png16_lib-$numvers.info
+copy clone ENV:Sys/def_install.info ${destdir}/png16_lib-$numvers/Install.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/png16_lib-$numvers/png16_lib.readme.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/png16_lib-$numvers/LICENSE.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/png16_lib-$numvers/LICENSE-libpng16.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/png16_lib-$numvers/releasenotes.info
+
+changetooltype ${destdir}/png16_lib-$numvers/Install.info ADD "APPNAME=png16.library"
+
+delete force RAM:png16_lib.lha
+lha a -x -r RAM:png16_lib.lha ${destdir}/
+
+echo "RAM:png16_lib.lha created"
+
+copy clone ${destdir}/png16_lib-$numvers/png16_lib.readme RAM:
+
