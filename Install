@@ -1,0 +1,9 @@
+(welcome)
+(set @default-dest "LIBS:")
+(copylib
+	(prompt "Copying png16.library")
+	(help @copylib-help)
+	(source "Libs/png16.library")
+	(dest @default-dest)
+)
+(exit)
