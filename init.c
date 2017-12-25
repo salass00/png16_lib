@@ -27,10 +27,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <dos/dos.h>
 #include <proto/exec.h>
+#include <proto/dos.h>
 #include <interfaces/png16.h>
 #include "png16.library_rev.h"
+
+#define LIBNAME "png16.library"
 
 static const USED TEXT verstag[] = VERSTAG;
 static const USED TEXT extversion[] = "\0$EXTVER: libpng " PNG_LIBPNG_VER_STRING " (" DATE ")";
@@ -41,9 +43,10 @@ struct PNG16Base {
 	/* If you need more data fields, add them here */
 };
 
-struct ExecIFace *IExec;
-struct Interface *INewlib;
-struct Interface *IZ;
+struct ExecIFace   *IExec;
+struct DOSIFace    *IDOS;
+struct NewlibIFace *INewlib;
+struct ZIFace      *IZ;
 
 int32 _start(void) {
 	/* If you feel like it, open DOS and print something to the user */
@@ -77,6 +80,39 @@ static void CloseInterface(struct Interface *interface) {
 
 	IExec->DropInterface(interface);
 	IExec->CloseLibrary(library);
+}
+
+static BOOL CheckInterface(struct Interface *interface, CONST_STRPTR name, int32 version, int32 revision) {
+	CONST_STRPTR bodytext;
+	ULONG        args[5];
+
+	bodytext = "Failed to open %s V%ld\n\n";
+
+	args[0] = (ULONG)name;
+	args[1] = version;
+
+	if (interface != NULL) {
+		if (LIB_IS_AT_LEAST(interface->Data.LibBase, version, revision))
+			return TRUE;
+
+		bodytext = "You need %s V%ld.%ld+\nYou only have V%ld.%ld\n\n";
+
+		args[2] = revision;
+		args[3] = interface->Data.LibBase->lib_Version;
+		args[4] = interface->Data.LibBase->lib_Revision;
+	}
+
+	IDOS->TimedDosRequesterTags(
+		TDR_Timeout,      30,
+		TDR_NonBlocking,  TRUE,
+		TDR_TitleString,  VERS,
+		TDR_FormatString, bodytext,
+		TDR_GadgetString, "OK",
+		TDR_ImageType,    TDRIMAGE_ERROR,
+		TDR_ArgArray,     args,
+		TAG_END);
+
+	return FALSE;
 }
 
 /* Open the library */
@@ -115,8 +151,9 @@ STATIC BPTR libExpunge(struct LibraryManagerInterface *Self) {
 		result = libBase->segList;
 
 		/* Undo what the init code did */
-		CloseInterface(IZ);
-		CloseInterface(INewlib);
+		CloseInterface((struct Interface *)IZ);
+		CloseInterface((struct Interface *)INewlib);
+		CloseInterface((struct Interface *)IDOS);
 
 		IExec->Remove((struct Node *)libBase);
 		IExec->DeleteLibrary((struct Library *)libBase);
@@ -132,7 +169,7 @@ STATIC BPTR libExpunge(struct LibraryManagerInterface *Self) {
 STATIC struct PNG16Base *libInit(struct PNG16Base *libBase, BPTR seglist, struct ExecIFace *exec) {
 	libBase->libNode.lib_Node.ln_Type = NT_LIBRARY;
 	libBase->libNode.lib_Node.ln_Pri  = 0;
-	libBase->libNode.lib_Node.ln_Name = (STRPTR)"png16.library";
+	libBase->libNode.lib_Node.ln_Name = (STRPTR)LIBNAME;
 	libBase->libNode.lib_Flags        = LIBF_SUMUSED|LIBF_CHANGED;
 	libBase->libNode.lib_Version      = VERSION;
 	libBase->libNode.lib_Revision     = REVISION;
@@ -141,15 +178,20 @@ STATIC struct PNG16Base *libInit(struct PNG16Base *libBase, BPTR seglist, struct
 	libBase->segList = seglist;
 	IExec = exec;
 
-	INewlib = OpenInterface("newlib.library", 53);
+	IDOS = (struct DOSIFace *)OpenInterface("dos.library", 52);
+	if (IDOS == NULL) {
+		IExec->Alert(AG_OpenLib | AO_DOSLib);
+		goto error;
+	}
+
+	INewlib = (struct NewlibIFace *)OpenInterface("newlib.library", 53);
 	if (INewlib == NULL) {
 		IExec->Alert(AG_OpenLib | AO_NewlibLib);
 		goto error;
 	}
 
-	IZ = OpenInterface("z.library", 53);
-	if (IZ == NULL || !LIB_IS_AT_LEAST(IZ->Data.LibBase, 53, 9)) {
-		IExec->Alert(AG_OpenLib | AO_Unknown);
+	IZ = (struct ZIFace *)OpenInterface("z.library", 53);
+	if (!CheckInterface((struct Interface *)IZ, "z.library", 53, 9)) {
 		goto error;
 	}
 
@@ -157,8 +199,9 @@ STATIC struct PNG16Base *libInit(struct PNG16Base *libBase, BPTR seglist, struct
 
 error:
 
-	CloseInterface(IZ);
-	CloseInterface(INewlib);
+	CloseInterface((struct Interface *)IZ);
+	CloseInterface((struct Interface *)INewlib);
+	CloseInterface((struct Interface *)IDOS);
 
 	IExec->DeleteLibrary((struct Library *)libBase);
 
@@ -255,7 +298,7 @@ STATIC CONST struct Resident USED lib_res = {
 	VERSION,
 	NT_LIBRARY, /* Make this NT_DEVICE if needed */
 	0, /* PRI, usually not needed unless you're resident */
-	"png16.library",
+	LIBNAME,
 	VSTRING,
 	(APTR)libCreateTags
 };
