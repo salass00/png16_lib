@@ -1,0 +1,21 @@
+An AmigaOS shared library implementation of libpng16. Currently it is based
+on version 1.6.34.
+
+Requirements:
+
+- z.library version 53.9 or newer.
+
+Installation:
+
+Copy Libs/png16.library LIBS:
+
+Source code:
+
+The source code for current and older versions is available on github:
+
+https://github.com/salass00/png16_lib
+
+Changes:
+
+For a list of changes in this and earlier versions see the releasenotes file.
+
