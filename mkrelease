@@ -1,6 +1,9 @@
 ; Script for generating a release archive
 
-make all
+if not exists png16.library
+echo "Execute *"make all*" first to compile the library."
+quit
+endif
 
 set libpngdir libpng-1.6.34
 set destdir RAM:mkrelease
