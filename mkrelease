@@ -14,7 +14,6 @@ delete all force ${destdir}
 makedir all force ${destdir}/png16_lib-$numvers/Libs
 makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/proto
 makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/interfaces
-makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/inline4
 makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/libraries
 makedir all force ${destdir}/png16_lib-$numvers/SDK/local/newlib/lib/pkgconfig
 makedir all force ${destdir}/png16_lib-$numvers/Examples
@@ -26,7 +25,6 @@ copy clone releasenotes ${destdir}/png16_lib-$numvers
 copy clone png16.library ${destdir}/png16_lib-$numvers/Libs
 copy clone include/proto/png16.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/proto
 copy clone include/interfaces/png16.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/interfaces
-copy clone include/inline4/png16.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/inline4
 copy clone include/libraries/png16.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/libraries
 copy clone ${libpngdir}/png.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/libpng16
 copy clone ${libpngdir}/pngconf.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/libpng16
