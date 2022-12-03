@@ -15,7 +15,7 @@ else
 	HOSTARG := 
 endif
 
-PNG16DIR := libpng-1.6.34
+PNG16DIR := libpng-1.6.38
 
 OPTIMIZE := -O2 -fomit-frame-pointer
 DEBUG    := -g
