@@ -15,8 +15,8 @@ makedir all force ${destdir}/png16_lib-$numvers/Libs
 makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/proto
 makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/interfaces
 makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/libraries
+makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/libpng16
 makedir all force ${destdir}/png16_lib-$numvers/SDK/local/newlib/lib/pkgconfig
-makedir all force ${destdir}/png16_lib-$numvers/Examples
 
 copy clone Install ${destdir}/png16_lib-$numvers
 copy clone LICENSE ${destdir}/png16_lib-$numvers
