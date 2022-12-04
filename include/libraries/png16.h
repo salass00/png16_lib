@@ -30,7 +30,11 @@
 #ifndef LIBRARIES_PNG16_H
 #define LIBRARIES_PNG16_H
 
+#ifdef _COMPILING_PNG16LIB
+#include <png.h>
+#else
 #include <libpng16/png.h>
+#endif
 
 #endif
 

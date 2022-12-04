@@ -3,36 +3,37 @@ VERSION := 53
 
 CC     := ppc-amigaos-gcc
 STRIP  := ppc-amigaos-strip
-AR     := ppc-amigaos-ar
-RANLIB := ppc-amigaos-ranlib
+AR     = ppc-amigaos-ar
+RANLIB = ppc-amigaos-ranlib
 
-BUILDSYS := $(shell uname -s)
+BUILDSYS = $(shell uname -s)
 
 # Only use host argument if cross-compiling
 ifneq ($(BUILDSYS),AmigaOS)
-	HOSTARG := --host=ppc-amigaos
+	HOSTARG = --host=ppc-amigaos
 else
-	HOSTARG := 
+	HOSTARG = 
 endif
 
-PNG16DIR := libpng-1.6.38
+PNG16DIR = libpng-1.6.38
 
-OPTIMIZE := -O2 -fomit-frame-pointer
-DEBUG    := -g
-INCLUDES := -I./include -I./$(PNG16DIR) -I./png16-build
-WARNINGS := -Wall -Wwrite-strings -Werror
+OPTIMIZE = -O2 -fomit-frame-pointer
+DEBUG    = -g
+INCLUDES = -I./include -I./$(PNG16DIR) -I./png16-build
+DEFINES  = -D_COMPILING_PNG16LIB
+WARNINGS = -Wall -Wwrite-strings -Werror
 
-CFLAGS   := $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
-LDFLAGS  := -static
-LIBS     := png16-build/.libs/libpng16.a
+CFLAGS   = $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(DEFINES) $(WARNINGS)
+LDFLAGS  = -static
+LIBS     = png16-build/.libs/libpng16.a
 
-STRIPFLAGS := -R.comment --strip-unneeded-rel-relocs
+STRIPFLAGS = -R.comment --strip-unneeded-rel-relocs
 
-main_SRCS := main/Obtain.c main/Release.c
-main_OBJS := $(main_SRCS:.c=.o)
+main_SRCS = main/Obtain.c main/Release.c
+main_OBJS = $(main_SRCS:.c=.o)
 
-SRCS := init.c zlib/stubs.c $(main_SRCS)
-OBJS := $(SRCS:.c=.o)
+SRCS = init.c zlib/stubs.c $(main_SRCS)
+OBJS = $(SRCS:.c=.o)
 
 .PHONY: all
 all: $(TARGET) libpng16.a pngcrush
