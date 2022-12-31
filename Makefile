@@ -1,8 +1,8 @@
-TARGET  := png16.library
-VERSION := 53
+TARGET  = png16.library
+VERSION = 53
 
-CC     := ppc-amigaos-gcc
-STRIP  := ppc-amigaos-strip
+CC     = ppc-amigaos-gcc
+STRIP  = ppc-amigaos-strip
 AR     = ppc-amigaos-ar
 RANLIB = ppc-amigaos-ranlib
 
@@ -18,7 +18,7 @@ endif
 PNG16DIR = libpng-1.6.38
 
 OPTIMIZE = -O2 -fomit-frame-pointer
-DEBUG    = -g
+DEBUG    = -gstabs
 INCLUDES = -I./include -I./$(PNG16DIR) -I./png16-build
 DEFINES  = -D_COMPILING_PNG16LIB
 WARNINGS = -Wall -Wwrite-strings -Werror
