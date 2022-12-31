@@ -275,6 +275,7 @@ static const APTR main_v1_vectors[] =
 	png_image_write_to_stdio,
 	png_image_write_to_memory,
 	png_set_option,
+	png_read_image,
 	(APTR)-1
 };
 

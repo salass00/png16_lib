@@ -269,6 +269,7 @@ struct PNG16IFace
 	int (*png_image_write_to_stdio)(png_imagep image, FILE *file, int convert_to_8_bit, const void *buffer, png_int_32 row_stride, const void *colormap);
 	int (*png_image_write_to_memory)(png_imagep image, void *memory, png_alloc_size_t * PNG_RESTRICT memory_bytes, int convert_to_8_bit, const void *buffer, png_int_32 row_stride, const void *colormap);
 	int (*png_set_option)(png_structrp png_ptr, int option, int onoff);
+	void (*png_read_image)(png_structrp png_ptr, png_bytepp image);
 };
 
 #ifdef __cplusplus

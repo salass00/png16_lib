@@ -291,4 +291,5 @@ PNG16Call(png_image_write_to_file, 1020)
 PNG16Call(png_image_write_to_stdio, 1024)
 PNG16Call(png_image_write_to_memory, 1028)
 PNG16Call(png_set_option, 1032)
+PNG16Call(png_read_image, 1036)
 
