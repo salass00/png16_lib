@@ -7,4 +7,5 @@ png16.library
 png16.library.debug
 pngcrush
 pngcrush.debug
-
+# Ignore release archives
+*.lha
