@@ -8,7 +8,7 @@ png16.library 53.2 (4.12.2022)
 - Updated to libpng version 1.6.38.
 
 
-png16.library 53.3 (d.m.2023)
+png16.library 53.3 (1.1.2023)
 
 - Added the png_read_image() function.
 
