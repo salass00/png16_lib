@@ -1,7 +1,7 @@
 /*
  * AmigaOS shared library implementation of libpng 1.6.x
  *
- * Copyright (C) 2017-2022 Fredrik Wikstrom <fredrik@a500.org>
+ * Copyright (C) 2017-2023 Fredrik Wikstrom <fredrik@a500.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
