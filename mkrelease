@@ -10,53 +10,50 @@ set destdir RAM:mkrelease
 set fullvers `version file png16.library`
 set numvers `cut "$fullvers" word 2`
 
+which changetooltype
+if warn
+  echo "The changetooltype command could not be found on your system."
+  echo "Please download and install the command from:"
+  echo "http://os4depot.net/?function=showfile&file=utility/misc/changetooltype.lha"
+  quit 10
+endif
+
 delete all force ${destdir}
-makedir all force ${destdir}/png16_lib-$numvers/Libs
-makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/proto
-makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/interfaces
-makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/libraries
-makedir all force ${destdir}/png16_lib-$numvers/SDK/local/common/include/libpng16
-makedir all force ${destdir}/png16_lib-$numvers/SDK/local/newlib/lib/pkgconfig
+makedir all force ${destdir}/png16_lib/Libs
+makedir all force ${destdir}/png16_lib/SDK/local/common/include/proto
+makedir all force ${destdir}/png16_lib/SDK/local/common/include/interfaces
+makedir all force ${destdir}/png16_lib/SDK/local/common/include/libraries
+makedir all force ${destdir}/png16_lib/SDK/local/common/include/libpng16
+makedir all force ${destdir}/png16_lib/SDK/local/newlib/lib/pkgconfig
 
-copy clone Install ${destdir}/png16_lib-$numvers
-copy clone LICENSE ${destdir}/png16_lib-$numvers
-copy clone ${libpngdir}/LICENSE ${destdir}/png16_lib-$numvers/LICENSE-libpng16
-copy clone releasenotes ${destdir}/png16_lib-$numvers
-copy clone png16.library ${destdir}/png16_lib-$numvers/Libs
-copy clone include/proto/png16.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/proto
-copy clone include/interfaces/png16.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/interfaces
-copy clone include/libraries/png16.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/libraries
-copy clone ${libpngdir}/png.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/libpng16
-copy clone ${libpngdir}/pngconf.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/libpng16
-copy clone png16-build/pnglibconf.h ${destdir}/png16_lib-$numvers/SDK/local/common/include/libpng16
-copy clone libpng16.a ${destdir}/png16_lib-$numvers/SDK/local/newlib/lib
-copy clone png16-build/libpng16.la ${destdir}/png16_lib-$numvers/SDK/local/newlib/lib
-copy clone png16-build/libpng16.pc ${destdir}/png16_lib-$numvers/SDK/local/newlib/lib/pkgconfig
+copy clone AutoInstall ${destdir}
+copy clone Install ${destdir}/png16_lib
+copy clone README ${destdir}/png16_lib
+copy clone LICENSE ${destdir}/png16_lib
+copy clone ${libpngdir}/LICENSE ${destdir}/png16_lib/LICENSE-libpng16
+copy clone releasenotes ${destdir}/png16_lib
+copy clone png16.library ${destdir}/png16_lib/Libs
+copy clone include/proto/png16.h ${destdir}/png16_lib/SDK/local/common/include/proto
+copy clone include/interfaces/png16.h ${destdir}/png16_lib/SDK/local/common/include/interfaces
+copy clone include/libraries/png16.h ${destdir}/png16_lib/SDK/local/common/include/libraries
+copy clone ${libpngdir}/png.h ${destdir}/png16_lib/SDK/local/common/include/libpng16
+copy clone ${libpngdir}/pngconf.h ${destdir}/png16_lib/SDK/local/common/include/libpng16
+copy clone png16-build/pnglibconf.h ${destdir}/png16_lib/SDK/local/common/include/libpng16
+copy clone libpng16.a ${destdir}/png16_lib/SDK/local/newlib/lib
+copy clone png16-build/libpng16.la ${destdir}/png16_lib/SDK/local/newlib/lib
+copy clone png16-build/libpng16.pc ${destdir}/png16_lib/SDK/local/newlib/lib/pkgconfig
 
-sed "s/png16_lib-xx.xx/png16_lib-$numvers/g" AutoInstall > ${destdir}/AutoInstall
+copy clone ENV:Sys/def_drawer.info ${destdir}/png16_lib.info
+copy clone ENV:Sys/def_install.info ${destdir}/png16_lib/Install.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/png16_lib/README.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/png16_lib/LICENSE.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/png16_lib/LICENSE-libpng16.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/png16_lib/releasenotes.info
 
-echo "Short:        Shared library based on libpng16"     > ${destdir}/png16_lib-$numvers/png16_lib.readme
-echo "Author:       Fredrik Wikstrom"                    >> ${destdir}/png16_lib-$numvers/png16_lib.readme
-echo "Uploader:     Fredrik Wikstrom <fredrik@a500.org>" >> ${destdir}/png16_lib-$numvers/png16_lib.readme
-echo "Type:         util/libs"                           >> ${destdir}/png16_lib-$numvers/png16_lib.readme
-echo "Version:      $numvers"                            >> ${destdir}/png16_lib-$numvers/png16_lib.readme
-echo "Architecture: ppc-amigaos"                         >> ${destdir}/png16_lib-$numvers/png16_lib.readme
-echo ""                                                  >> ${destdir}/png16_lib-$numvers/png16_lib.readme
-type README                                              >> ${destdir}/png16_lib-$numvers/png16_lib.readme
-
-copy clone ENV:Sys/def_drawer.info ${destdir}/png16_lib-$numvers.info
-copy clone ENV:Sys/def_install.info ${destdir}/png16_lib-$numvers/Install.info
-copy clone ENV:Sys/def_ascii.info ${destdir}/png16_lib-$numvers/png16_lib.readme.info
-copy clone ENV:Sys/def_ascii.info ${destdir}/png16_lib-$numvers/LICENSE.info
-copy clone ENV:Sys/def_ascii.info ${destdir}/png16_lib-$numvers/LICENSE-libpng16.info
-copy clone ENV:Sys/def_ascii.info ${destdir}/png16_lib-$numvers/releasenotes.info
-
-changetooltype ${destdir}/png16_lib-$numvers/Install.info ADD "APPNAME=png16.library"
+changetooltype ${destdir}/png16_lib/Install.info ADD "APPNAME=png16.library"
 
 delete force RAM:png16_lib.lha
 lha a -x -r RAM:png16_lib.lha ${destdir}/
 
 echo "RAM:png16_lib.lha created"
-
-copy clone ${destdir}/png16_lib-$numvers/png16_lib.readme RAM:
 

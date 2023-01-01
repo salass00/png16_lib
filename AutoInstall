@@ -1,4 +1,4 @@
 ; AutoInstall script for AmiUpdate
 
-CopyStore png16_lib-xx.xx/Libs/png16.library LIBS:
+CopyStore png16_lib/Libs/png16.library LIBS:
 
